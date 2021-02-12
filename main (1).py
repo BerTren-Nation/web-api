@@ -83,11 +83,14 @@ HTTP_STATUS_CODES = {
     510: "Not Extended",
     511: "Network Authentication Failed",  # see RFC 6585
 }
+
 @app.route('/api/apikey', methods=['GET','POST'])
-def apian():
-	file_json = open("apikey.json")
-	data = json.loads(file_json.read())
-	print(data)
+def apikei():
+	file_jnson = open("apikey.json")
+	daota = json.loads(file_jnson.read())
+	print(daota)
+	return daota
+
 
 @app.route('/api/statuscode', methods=['GET','POST'])
 def statuscode():
@@ -100,9 +103,6 @@ def statuscode():
 	else:
 		return { 'status': False, 'pesan': 'Masukkan parameter code'}
 	
-@app.route('/api/rncode', methods=['GET','POST'])
-def randomc_nhentai_code():
-	return 'Random'
 
 @app.route('/sendimage/<path:filename>', methods=['GET','POST'])
 def sendimage(filename):

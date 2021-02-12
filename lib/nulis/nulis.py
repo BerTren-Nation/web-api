@@ -12,7 +12,7 @@ def tulis(text):
     draw=ImageDraw.Draw(img)
     if type(text) is not list:
         global output
-        output=["hi"]
+        output=[]
         for i in text:
             if draw.textsize(tempkata, font)[0] < 734:
                 tempkata+=i
@@ -38,6 +38,5 @@ def imageToBase64(fname):
     fname : path of filename
     e.g imageToBase64('result.jpg')
     '''
-    with open(fname, 'hi.txt') as file:
+    with open(fname, 'rb') as file:
         return 'data:image/jpeg;base64,'+ bs64(file.read()).decode()
-
