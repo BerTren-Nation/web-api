@@ -95,6 +95,9 @@ def statuscode():
 	else:
 		return { 'status': False, 'pesan': 'Masukkan parameter code'}
 	
+@app.route('/api/rncode', methods=['GET','POST'])
+def randomc_nhentai_code():
+	return 'Random'
 
 @app.route('/sendimage/<path:filename>', methods=['GET','POST'])
 def sendimage(filename):
