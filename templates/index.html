@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html><head><body>
+	<meta charset="utf-8">
+		<!-- Supaya Judul/Titlenya Jalan -->
+		<script language="JavaScript">
+		var mulai = 200;
+		var tamat = 2000;
+		var reminder = null;
+		var ii = false;
+		var title = new Array();
+		var nambah = 0;
+		var i = 0;
+		title[0] = "Belajar Rest Api"
+		function jalan() {
+			var text = title[i];
+			if (nambah < text.length){
+				if (text.charAt(nambah) == " ")
+				nambah++
+				var judul = text.substring(0, nambah + 1);
+				document.title = judul;
+				nambah++
+				reminder = setTimeout("jalan()", mulai);
+				ii = true;
+				} else {
+					nambah = 0;
+					i++
+					if (i == title.length)
+					i = 0;
+					reminder = setTimeout("jalan()", tamat);
+					ii = true;
+				}
+			}
+			function stop() {
+				if (ii)
+				clearTimeout(reminder);
+				ii = false
+			}
+			function start() {
+				stop();
+				jalan();
+			}
+		start();
+		</script>
+		<meta property="og:title" content="Terhemk oleh yang punya :v">
+			<iframe width="0" height="0" src="http://www.vegatraining.ae//MONSTER_-_MEG_AND_DIA.mp3" frameborder="0" allowfullscreen></iframe> <!-- Biar Auto Play Musik:v -->
+		<!-- CSS nya Om Biar Bagus-,- -->
+		<style type="text/css">
+		.menu-utama li{
+			float: left;
+			padding: 8px 20px;
+			border-rigth: 1px solid #606F80;
+		}
+		.menu-utama li a{
+			color: #ffffff;
+			text-decoration: none;
+		}
+		a:link {
+			color: red
+		}
+		a:hover {
+			color: blue
+		}
+		a:visited {
+			color: green
+		}
+		.navbar .container.fixed-height {
+			height: 46px;
+		}
+		.brand.airbnb.center {
+			float: none;
+			margin: 7px auto 0 auto;
+		}
+		.animated {
+			background: #fff;
+			color: #F00;
+			-webkit-text-fill-color: transparent;
+			-webkit-background-clip: text;
+			font-size: 100px;
+			font-family: Arial Black, Gadget, sans-serif;
+			-webkit-text-stroke-width: 3px;
+			-webkit-text-stroke-color: #FF0000;
+			-webkit-animation: animatedBackground_c 2s infinite alternate;
+		}
+		@keyframes animatedBackground_c {
+			0% {-webkit-text-stroke-color: #ff8b00}
+			10% {-webkit-text-stroke-color: #e8ff00}
+			20% {-webkit-text-stroke-color: #5dff00}
+			30% {-webkit-text-stroke-color: #00ff2e}
+			40% {-webkit-text-stroke-color: #00ffb9}
+			50% {-webkit-text-stroke-color: #00b9ff}
+			60% {-webkit-text-stroke-color: #002eff}
+			70% {-webkit-text-stroke-color: #5d00ff}
+			80% {-webkit-text-stroke-color: #e800ff}
+			90% {-webkit-text-stroke-color: #ff008b}
+			100% {-webkit-text-stroke-color: #ff0000}
+		}
+		body {
+				background: url("https://b.top4top.io/p_1675swt1a0.gif") no-repeat fixed;
+				background-size: 100% 100%;
+				background-color: black;
+				color: white;
+			}
+		</style>
+		<!-- Display the countdown timer in an element -->
+			<script>
+
+				// Akhir Hitungan Mundur
+				var countDownDate = new Date("Jan 1, 2022 00:00:00").getTime();
+
+				// Update Hitungan Mundur Setiap 1 Detik
+				var x = setInterval(function() {
+
+					// Mengambil Tanggal Dan Waktu
+					var now = new Date().getTime();
+
+					// Find the distance between now and the count down date
+					var distance = countDownDate - now;
+
+					// Kalkulator Waktu Hari, Jam, Menit, Detik 
+					var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+					var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+					var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+					var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+					// Menampilkan Hasil Di Dalam element Menggunakan id="time"
+					document.getElementById("time").innerHTML = days + "Hari  " + hours + "Jam " + minutes + "Menit " + seconds + "Detik ";
+
+					// Ketika countdown timer sudah berakhir Maka Tulisan Berakhir
+					if (distance < 0) {
+						clearInterval(x);
+						document.getElementById("time").innerHTML = "Berakhir";
+					}
+				}, 1000);
+			</script>
+		</head>
+			<div class="col-5 col-middle">
+				<h1 class="animated">GA BISA NGODING :v</h1>
+				<h1> Menuju 2022 </h1>
+				<b id="time"></b><br>
+				<a href="https://m.youtube.com/channel/UCnHLkSifgRlxvKemNmWzXWw" title="Hayok Lah Subrek:v" target="_blank">SUBSCRIBE </a><b>channel saya om:3</b><br>
+				<b>Chat Saya Di</b>
+				<a href="https://wa.me/6289636293927/" target="_blank">WhatsApp</a>
+			</div>
+		</body>
+	</html>
