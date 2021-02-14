@@ -149,7 +149,7 @@ def onecak():
 	if request.args.get('code'):
 		try:
 			code = int(request.args.get('code'))
-			result = trendcak(random.randint(1111110,9987199))
+			result = trendcak(code)
 			return { 'status': 200, 'result': result }
 		except Exception as e:
 			return { 'status': False, 'pesan': 'Error{e}'}

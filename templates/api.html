@@ -240,13 +240,94 @@ print(res)
 :code (YourCodeMeme)
 """
 from requests import get
-params = {'code': 200}
+params = {'code': 2752858}
 res = get('https://api-angga.herokuapp.com/api/1cak', params=params).content
 print(res)
 											</code></pre>
           							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
 {
-  "result": "https://cnd20.1cak.com/post/0bb1223329ade80aebd557c65358ff3_t.jpg",
+  "result": "https://cdn14.1cak.com/posts/7e63594f4d19e2fda8a0e2758e4989c6_t.jpg",
+  "status": 200
+}
+          								</code></pre></div>
+          								<div class="modal-footer">
+          								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          								</div>
+          					          </div>
+          							</div>
+          						</div>
+          					</td>
+          				</tr><tr><td><font color="green">Active</font></td>
+          					<td>Info Gempa</td>
+          					<td>
+          						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#infogempa">
+          						  <i class="material-icons">info</i>
+          						  <span class="text">Example</span>
+          						</button>
+          						<div class="modal fade" id="infogempa" role="dialog" aria-labelledby="onecak" aria-hidden="true">
+          							<div class="modal-dialog" role="document">
+          							  <div class="modal-content">
+          							    <div class="modal-header">
+          							      <h5 class="btn btn-primary modal-title" id="infogempa"> Python</h5>
+          							      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          							        <span aria-hidden="true">&times;</span>
+          							      </button>
+          							    </div>
+          							    <div class="modal-body" style="text-align: left;">
+          							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/infogempa" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
+          							    	<pre><code class="python">
+from requests import get
+res = get('https://api-angga.herokuapp.com/api/infogempa', params=params).content
+print(res)
+											</code></pre>
+          							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
+{
+  "kedalaman": "10 km",
+  "koordinat": "1.11 LU - 119.93 BT",
+  "lokasi": "Pusat gempa berada di laut 95 km BaratLaut Toli-toli",
+  "magnitude": "5.5",
+  "map": "https://ews.bmkg.go.id/tews/data/20210214164446.mmi.jpg",
+  "potensi": "Dirasakan (Skala MMI): III Toli-Toli, III Buol",
+  "status": 200,
+  "waktu": "14 Feb 2021, 16:44 WIB"
+}
+          								</code></pre></div>
+          								<div class="modal-footer">
+          								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          								</div>
+          					          </div>
+          							</div>
+          						</div>
+          					</td>
+          				</tr><tr><td><font color="green">Active</font></td>
+          					<td>Waifu</td>
+          					<td>
+          						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#waifu">
+          						  <i class="material-icons">info</i>
+          						  <span class="text">Example</span>
+          						</button>
+          						<div class="modal fade" id="waifu" role="dialog" aria-labelledby="waifu" aria-hidden="true">
+          							<div class="modal-dialog" role="document">
+          							  <div class="modal-content">
+          							    <div class="modal-header">
+          							      <h5 class="btn btn-primary modal-title" id="infogempa"> Python</h5>
+          							      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          							        <span aria-hidden="true">&times;</span>
+          							      </button>
+          							    </div>
+          							    <div class="modal-body" style="text-align: left;">
+          							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/waifu" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
+          							    	<pre><code class="python">
+from requests import get
+res = get('https://api-angga.herokuapp.com/api/waifu', params=params).content
+print(res)
+											</code></pre>
+          							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
+{
+  "desc": "In the past, he'd looked into a murder case involving Oh Sangwoo's parents. Though it was declared cold, he investigated further and became suspicious",
+  "image": "https://thicc.mywaifulist.moe/waifus/8184/1c0ff2c16292c621015b050337a60f626701ae25fc051557b290f832ef982475_thumb.jpeg",
+  "name": "Yang Seungbae",
+  "source": "https://mywaifulist.moe/waifu/yang-seungbae",
   "status": 200
 }
           								</code></pre></div>
