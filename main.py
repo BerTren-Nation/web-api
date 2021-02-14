@@ -6,6 +6,7 @@ from lib.manga import *
 from lib.resize import *
 from lib.search import *
 from lib.nulis import *
+from lib.meme import *
 from urllib.parse import *
 from flask import *
 #from werkzeug.utils import *
@@ -24,7 +25,75 @@ app.secret_key = b'BB,^z\x90\x88?\xcf\xbb'
 #ALLOWED_EXTENSION = set(['png', 'jpeg', 'jpg'])
 #app.config['Layer_Folder'] = 'layer'
 
+# FUNICTIONNYA
 
+
+HTTP_STATUS_CODES = {
+    100: "Continue",
+    101: "Switching Protocols",
+    102: "Processing",
+    103: "Early Hints",  # see RFC 8297
+    200: "OK",
+    201: "Created",
+    202: "Accepted",
+    203: "Non Authoritative Information",
+    204: "No Content",
+    205: "Reset Content",
+    206: "Partial Content",
+    207: "Multi Status",
+    208: "Already Reported",  # see RFC 5842
+    226: "IM Used",  # see RFC 3229
+    300: "Multiple Choices",
+    301: "Moved Permanently",
+    302: "Found",
+    303: "See Other",
+    304: "Not Modified",
+    305: "Use Proxy",
+    306: "Switch Proxy",  # unused
+    307: "Temporary Redirect",
+    308: "Permanent Redirect",
+    400: "Bad Request",
+    401: "Unauthorized",
+    402: "Payment Required",  # unused
+    403: "Forbidden",
+    404: "Not Found",
+    405: "Method Not Allowed",
+    406: "Not Acceptable",
+    407: "Proxy Authentication Required",
+    408: "Request Timeout",
+    409: "Conflict",
+    410: "Gone",
+    411: "Length Required",
+    412: "Precondition Failed",
+    413: "Request Entity Too Large",
+    414: "Request URI Too Long",
+    415: "Unsupported Media Type",
+    416: "Requested Range Not Satisfiable",
+    417: "Expectation Failed",
+    418: "I'm a teapot",  # see RFC 2324
+    421: "Misdirected Request",  # see RFC 7540
+    422: "Unprocessable Entity",
+    423: "Locked",
+    424: "Failed Dependency",
+    425: "Too Early",  # see RFC 8470
+    426: "Upgrade Required",
+    428: "Precondition Required",  # see RFC 6585
+    429: "Too Many Requests",
+    431: "Request Header Fields Too Large",
+    449: "Retry With",  # proprietary MS extension
+    451: "Unavailable For Legal Reasons",
+    500: "Internal Server Error",
+    501: "Not Implemented",
+    502: "Bad Gateway",
+    503: "Service Unavailable",
+    504: "Gateway Timeout",
+    505: "HTTP Version Not Supported",
+    506: "Variant Also Negotiates",  # see RFC 2295
+    507: "Insufficient Storage",
+    508: "Loop Detected",  # see RFC 5842
+    510: "Not Extended",
+    511: "Network Authentication Failed",  # see RFC 6585
+}
 
 def convert_size(size_bytes):
 	if size_bytes == 0:
@@ -38,37 +107,69 @@ def convert_size(size_bytes):
 #def allowed_file(filename):
 #    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSION
 
+@app.route('/api/statuscode', methods=['GET','POST'])
+def statuscode():
+	if request.args.get('code'):
+		try:
+			code = int(request.args.get('code'))
+			return { 'status': 200, 'result': HTTP_STATUS_CODES[code] }
+		except Exception as e:
+			return { 'status': 200, 'result': 'Tidak Ada Code Respon'}
+	else:
+		return { 'status': False, 'pesan': 'Masukkan parameter code'}
 
-@app.route('/api/testUp', methods=['GET','POST'])
-def testUp():
-	return 'okk'
+@app.route('/api/simi', methods=['GET','POST'])
+def simi():
+	if request.args.get('text'):
+		if request.args.get('language'):
+			simi_txt = request.args.get('text')
+			simi_language = request.args.get('language')
+			simi_url = f'http://api.simsimi.com/request.p?key=ae752867-ab2f-4827-ab64-88aebed49a1c&lc={simi_language}&text={simi_txt}'
+			result = get(simi_url).json()
+			return { 'status': 200, 'result': result['response'] }
+		else:
+			return { 'status': False, 'pesan': 'Masukkan parameter language'}
+	else:
+		return { 'status': False, 'pesan': 'Masukkan parameter text'}
 
-@app.route('/api/rnhentai', methods=['GET','POST'])
-def random_hentai():
-	def Doujin_Code():
-		code = ''
-		for i in range(6):
-			code += str(random.randint(0,9))
-		return code
-	def doujin_url():
-		valid = False
-		while valid == False:
-			url = 'https://nhentai.net/g/'+Doujin_Code()+'/'
-			r = get(url)
-			if r.status_code != 404:
-				valid = True
-		return url
-	generate = True
-	while generate == True:
-		data = requests.get(doujin_url())
-		soup = bs(data.text, 'html.parser')
-		tags = soup.find_all('span', class_='name')
-		tag = [i.text for i in tags]
-		return tag
+@app.route('/api/randomquotes', methods=['GET','POST'])
+def randomquotes():
+	quotes_file = json.loads(open('quotes.json').read())
+	result = random.choice(quotes_file)
+	return { 'status': 200, 'result': result }
 
-@app.route('/tts/<path:filename>', methods=['GET','POST'])
-def sendTts(filename):
-	return send_from_directory(app.config['MEDIA'], filename, as_attachment=True)
+@app.route('/api/husbu', methods=['GET','POST'])
+def husbu():
+	husbu_file = json.loads(open('husbu.json').read())
+	result = random.choice(husbu_file)
+	return { 'status': 200, 'result': result }
+
+@app.route('/api/1cak', methods=['GET','POST'])
+def trenonecak():
+	if request.args.get('code'):
+		try:
+			code = int(request.args.get('code'))
+			result = trendcak(random.randint(1111110,9987199))
+			return { 'status': 200, 'result': result }
+		except Exception as e:
+			return { 'status': False, 'pesan': 'Error{e}'}
+	else:
+		return {
+			'status': False,
+			'pesan': '[!] Masukkan parameter code'
+		}
+
+@app.route('/api/r1cak', methods=['GET','POST'])
+def trenonecak():
+	result = trendcak(random.randint(1111110,9987199))
+	return { 'status': 200, 'result': result }
+
+@app.route('/admin/file/cyser/<path:filename>', methods=['GET','POST'])
+def sendFille(filename):
+	try:
+		return send_from_directory(app.config['MEDIA'], filename, as_attachment=True)
+	except Exception as e:
+		return render_template('404.html'), 404
 
 @app.route('/api/layer', methods=['GET','POST'])
 def layer():
@@ -93,7 +194,7 @@ def layer():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter base64image'
+			'pesan': '[!] Masukkan parameter base64image'
 		}
 
 @app.route('/api/spamgmail', methods=['GET','POST'])
@@ -106,18 +207,18 @@ def spamgimel():
             if jumlah > 10:
                 return {
                     'status': False,
-                    'msg': '[!] Max 10 tod!'
+                    'pesan': '[!] Max 10 tod!'
                 }
             try:
                 server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.ehlo()
                 server.starttls()
-                server.login('spamz.barbar@gmail.com', 'Barbar05')
+                server.login('spamz.cyser@gmail.com', 'spamz cyser 888')
                 hasil = ''
                 for i in range(jumlah):
                     mess = ''.join(random.choice(abece) for _ in range(4))
                     msg = f'From: {random.randint(1, 100)}<Hacker>\nSubject: Anonymous ~ Hacker\n{mess}'
-                    server.sendmail('spamz.barbar@gmail.com', target_imel, msg)
+                    server.sendmail('spamz.cyser@gmail.com', target_imel, msg)
                     hasil += '[!] Sukses\n'
                 server.quit()
                 return {
@@ -134,12 +235,12 @@ def spamgimel():
         else:
             return {
                 'status': False,
-                'msg': 'Masukkan parameter jum'
+                'pesan': 'Masukkan parameter jum'
             }
     else:
         return {
             'status': False,
-            'msg': 'Masukkan parameter target'
+            'pesan': 'Masukkan parameter target'
         }
 
 @app.route('/api/spamcall', methods=['GET','POST'])
@@ -161,12 +262,12 @@ def spamcall():
         else:
             return {
                 'status': False,
-                'msg': '[!] Tolong masukkan nomor dengan awalan 8'
+                'pesan': '[!] Tolong masukkan nomor dengan awalan 8'
             }
     else:
         return {
             'status': False,
-            'msg': '[!] Masukkan parameter no' 
+            'pesan': '[!] Masukkan parameter no' 
         }
 @app.route('/api/spamsms', methods=['GET','POST'])
 def spamming():
@@ -176,7 +277,7 @@ def spamming():
             jum = int(request.args.get('jum'))
             if jum > 20: return {
                 'status': 200,
-                'msg': '[!] Max 20 ganteng'
+                'pesan': '[!] Max 20 ganteng'
             }
             url = 'https://www.lpoint.co.id/app/member/ESYMBRJOTPSEND.do'
             head = {'UserAgent': 'Mozilla/5.0 (Linux; Android 8.1.0; CPH1853) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Mobile Safari/537.36'}
@@ -205,12 +306,12 @@ def spamming():
         else:
             return {
                 'status': False,
-                'msg': '[!] Masukkin parameter jum juga ganteng'
+                'pesan': '[!] Masukkin parameter jum juga ganteng'
             }
     else:
         return {
             'status': False,
-            'msg': '[!] Masukkan parameter no'
+            'pesan': '[!] Masukkan parameter no'
         }
 
 @app.route('/nulis', methods=['GET','POST'])
@@ -232,7 +333,7 @@ def noolees():
     else:
         return {
             'status': False,
-            'msg': '[!] Masukkan parameter text'
+            'pesan': '[!] Masukkan parameter text'
         }
 @app.route('/api/wiki', methods=['GET','POST'])
 def wikipedia():
@@ -257,7 +358,7 @@ def wikipedia():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan param q'
+			'pesan': '[!] Masukkan param q'
 		}
 
 @app.route('/api/tts', methods=['GET','POST'])
@@ -269,7 +370,7 @@ def tts():
 			if int(len(teks)) - int(len(teks.split(' '))) == 250:
 				return {
 					'status': 200,
-					'msg': '[❗] Maaf teks terlalu panjang!!',
+					'pesan': '[❗] Maaf teks terlalu panjang!!',
 				}
 			else:
 				url = f'https://rest.farzain.com/api/tts.php?id={teks}&apikey='
@@ -279,7 +380,7 @@ def tts():
 					open('tts/tts.mp3','wb').write(Tts)
 					return {
 						'status': 200,
-						'msg': 'Success convert text to speech!',
+						'pesan': 'Success convert text to speech!',
 						'file': 'https://mhankbarbar/tts/tts.mp3'
 					}
 				else:
@@ -287,19 +388,19 @@ def tts():
 					open('tts/tts.mp3','wb').write(Tts)
 					return {
 						'status': 200,
-						'msg': 'Success convert text to speech!',
+						'pesan': 'Success convert text to speech!',
 						'file': 'https://mhankbarbar.herokuapp.com/tts/tts.mp3'
 					}
 		except Exception as e:
 			print(e)
 			return {
 				'status': False,
-				'msg': '[!] Upss, terjadi kesalahan'
+				'pesan': '[!] Upss, terjadi kesalahan'
 			}
 	else:
 		return {
 			'status': 200,
-			'msg': '[!] Masukkan parameter text'
+			'pesan': '[!] Masukkan parameter text'
 		}
 
 @app.route('/api/ytv', methods=['GET','POST'])
@@ -332,7 +433,7 @@ def ytv():
 	else:
 		return {
 			'status': False,
-			'msg': 'Masukkan parameter url'
+			'pesan': 'Masukkan parameter url'
 		}
 
 @app.route('/api/yta', methods=['GET','POST'])
@@ -364,7 +465,7 @@ def yta():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter url'
+			'pesan': '[!] Masukkan parameter url'
 		}
 
 @app.route('/api/chord', methods=['GET','POST'])
@@ -388,7 +489,7 @@ def chord():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter q'
+			'pesan': '[!] Masukkan parameter q'
 		}
 
 @app.route('/api/dewabatch', methods=['GET','POST'])
@@ -414,7 +515,7 @@ def dewabatch():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter q'
+			'pesan': '[!] Masukkan parameter q'
 		}
 
 @app.route('/api/komiku', methods=['GET','POST'])
@@ -442,7 +543,7 @@ def komiku():
     else:
         return {
             'status': False,
-            'msg': '[!] Masukkan parameter q'
+            'pesan': '[!] Masukkan parameter q'
         }
 
 @app.route('/api/kuso', methods=['GET','POST'])
@@ -470,7 +571,7 @@ def kusonime():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter q'
+			'pesan': '[!] Masukkan parameter q'
 		}
 
 @app.route('/api/otakudesu')
@@ -497,7 +598,7 @@ def otakudesuu():
     else:
         return {
             'status': False,
-            'msg': '[!] Masukkan parameter q'
+            'pesan': '[!] Masukkan parameter q'
         }
             
 @app.route('/api/brainly', methods=['GET','POST'])
@@ -519,7 +620,7 @@ def brainly_scraper():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter q'
+			'pesan': '[!] Masukkan parameter q'
 		}
 
 @app.route('/api/nekonime', methods=['GET','POST'])
@@ -580,7 +681,7 @@ def igeh():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter url'
+			'pesan': '[!] Masukkan parameter url'
 		}
 
 @app.route('/api/cuaca', methods=['GET','POST'])
@@ -608,19 +709,18 @@ def cuaca():
 						'kelembapan': weather['respon']['kelembapan'],
 						'udara': weather['respon']['udara'],
 						'angin': weather['respon']['angin']
-					},
-					'creator': 'Mhank BarBar'
+					}
 				}
 		except Exception as e:
 			print('Error : %s' % e)
 			return {
 				'status': False,
-				'msg': '[❗] Gagal mengambil informasi cuaca, mungkin tempat tidak terdaftar/salah!'
+				'pesan': '[❗] Gagal mengambil informasi cuaca, mungkin tempat tidak terdaftar/salah!'
 			}
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter q'
+			'pesan': '[!] Masukkan parameter q'
 		}
 
 @app.route('/api/stalk', methods=['GET','POST'])
@@ -650,7 +750,7 @@ def stalk():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter username'
+			'pesan': '[!] Masukkan parameter username'
 		}
 
 @app.route('/daerah', methods=['GET','POST'])
@@ -691,7 +791,7 @@ def jadwalshalat():
 	else:
 		return {
 			'status': False,
-			'msg': '[!] Masukkan parameter daerah'
+			'pesan': '[!] Masukkan parameter daerah'
 		}
 
 @app.route('/api/waifu', methods=['GET','POST'])
@@ -757,46 +857,6 @@ def quotesnimerandom():
 		}
 	}
 
-# SOSMED API #
-@app.route('/dok/epbe', methods=['GET','POST'])
-def dokepbe():
-	return render_template('epbe.html')
-
-@app.route('/dok/ig', methods=['GET','POST'])
-def dokig():
-	return render_template('ig.html')
-
-@app.route('/dok/yta', methods=['GET','POST'])
-def dokyta():
-	return render_template('yta.html')
-
-@app.route('/dok/ytv', methods=['GET','POST'])
-def dokytv():
-	return render_template('ytv.html')
-
-@app.route('/dok/twit', methods=['GET','POST'])
-def doktwit():
-	return render_template('twit.html')	
-
-@app.route('/dok/stalk', methods=['GET','POST'])
-def dokstalk():
-	return render_template('stalk.html')
-
-@app.route('/dok/twstalk', methods=['GET','POST'])
-def dokstalkk():
-	return render_template('twstalk.html')
-
-# EDUCATIONAL API #
-
-@app.route('/dok/wiki', methods=['GET','POST'])
-def dokwiki():
-	return render_template('wiki.html')
-
-
-
-@app.route('/dok/cuaca', methods=['GET','POST'])
-def dokcuaca():
-	return render_template('cuaca.html')
 
 @app.route('/api', methods=['GET','POST'])
 def api():
@@ -808,6 +868,6 @@ def index():
 
 @app.errorhandler(404)
 def error(e):
-	return render_template('error.html'), 404
+	return render_template('404.html'), 404
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=int(os.environ.get('PORT','5000')),debug=True)
