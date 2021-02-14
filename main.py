@@ -145,7 +145,7 @@ def husbu():
 	return { 'status': 200, 'result': result }
 
 @app.route('/api/1cak', methods=['GET','POST'])
-def trenonecak():
+def onecak():
 	if request.args.get('code'):
 		try:
 			code = int(request.args.get('code'))
