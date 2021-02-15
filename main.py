@@ -11,7 +11,6 @@ from urllib.parse import *
 from flask import *
 #from werkzeug.utils import *
 from functools import wraps
-from selenium.webdriver import PhantomJS
 from bs4 import BeautifulSoup as bs
 from requests import get, post, Session
 from faunadb import query as q
@@ -116,19 +115,6 @@ def convert_size(size_bytes):
 
 #def allowed_file(filename):
 #    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSION
-
-@app.route("/api/ssweb", methods=['GET','POST'])
-def ssweb():
-    url = request.args.get("url", "")
-	chrome_options = webdriver.ChromeOptions()
-	chrome_options.add_argument("--headless")
-	chrome_options.add_argument("--disable-dev-shm-usage")
-	chrome_options.add_argument("--no-sandbox")
-	chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-	driver.get(url)
-	png = driver.get_screenshot_as_png()
-    return Response(png, mimetype="image/png")
 
 @app.route("/api/shortlink/<path:address>/", methods=['GET','POST'])
 def generate(address):
