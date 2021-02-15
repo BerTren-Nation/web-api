@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <!-- Supaya Judul/Titlenya Jalan -->
 		<script language="JavaScript">
-		var mulai = 200;
+		var mulai = 500;
 		var tamat = 2000;
 		var reminder = null;
 		var ii = false;
@@ -182,82 +182,6 @@ print(res)
           						</div>
           					</td>
           				</tr><tr><td><font color="green">Active</font></td>
-          					<td>Random Meme</td>
-          					<td>
-          						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#random_meme">
-          						  <i class="material-icons">info</i>
-          						  <span class="text">Example</span>
-          						</button>
-          						<div class="modal fade" id="random_meme" role="dialog" aria-labelledby="random_meme" aria-hidden="true">
-          							<div class="modal-dialog" role="document">
-          							  <div class="modal-content">
-          							    <div class="modal-header">
-          							      <h5 class="btn btn-primary modal-title" id="random_meme"> Python</h5>
-          							      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          							        <span aria-hidden="true">&times;</span>
-          							      </button>
-          							    </div>
-          							    <div class="modal-body" style="text-align: left;">
-          							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com<br>/api/random1cak" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
-          							    	<pre><code class="python">
-from requests import get
-res = get('https://api-angga.herokuapp.com/api/r1cak').json()
-print(res)
-											</code></pre>
-          							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
-{
-  "result": "https://cnd20.1cak.com/post/0bb1223329ade80aebd557c65358ff3_t.jpg",
-  "status": 200
-}
-          								</code></pre></div>
-          								<div class="modal-footer">
-          								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-          								</div>
-          					          </div>
-          							</div>
-          						</div>
-          					</td>
-          				</tr><tr><td><font color="green">Active</font></td>
-          					<td>1 Cak</td>
-          					<td>
-          						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#onecak">
-          						  <i class="material-icons">info</i>
-          						  <span class="text">Example</span>
-          						</button>
-          						<div class="modal fade" id="onecak" role="dialog" aria-labelledby="onecak" aria-hidden="true">
-          							<div class="modal-dialog" role="document">
-          							  <div class="modal-content">
-          							    <div class="modal-header">
-          							      <h5 class="btn btn-primary modal-title" id="onecak"> Python</h5>
-          							      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          							        <span aria-hidden="true">&times;</span>
-          							      </button>
-          							    </div>
-          							    <div class="modal-body" style="text-align: left;">
-          							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com<br>/api/random1cak" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
-          							    	<pre><code class="python">
-"""
-:code (YourCodeMeme)
-"""
-from requests import get
-params = {'code': 2752858}
-res = get('https://api-angga.herokuapp.com/api/1cak', params=params).content
-print(res)
-											</code></pre>
-          							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
-{
-  "result": "https://cdn14.1cak.com/posts/7e63594f4d19e2fda8a0e2758e4989c6_t.jpg",
-  "status": 200
-}
-          								</code></pre></div>
-          								<div class="modal-footer">
-          								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-          								</div>
-          					          </div>
-          							</div>
-          						</div>
-          					</td>
-          				</tr><tr><td><font color="green">Active</font></td>
           					<td>Info Gempa</td>
           					<td>
           						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#infogempa">
@@ -277,7 +201,7 @@ print(res)
           							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/infogempa" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
           							    	<pre><code class="python">
 from requests import get
-res = get('https://api-angga.herokuapp.com/api/infogempa', params=params).content
+res = get('https://api-angga.herokuapp.com/api/infogempa').content
 print(res)
 											</code></pre>
           							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
@@ -319,7 +243,7 @@ print(res)
           							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/waifu" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
           							    	<pre><code class="python">
 from requests import get
-res = get('https://api-angga.herokuapp.com/api/waifu', params=params).content
+res = get('https://api-angga.herokuapp.com/api/waifu').content
 print(res)
 											</code></pre>
           							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
@@ -330,6 +254,49 @@ print(res)
   "source": "https://mywaifulist.moe/waifu/yang-seungbae",
   "status": 200
 }
+          								</code></pre></div>
+          								<div class="modal-footer">
+          								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          								</div>
+          					          </div>
+          							</div>
+          						</div>
+          					</td>
+          				</tr><tr><td><font color="green">Active</font></td>
+          					<td>Short Link</td>
+          					<td>
+          						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#shortlink">
+          						  <i class="material-icons">info</i>
+          						  <span class="text">Example</span>
+          						</button>
+          						<div class="modal fade" id="waifu" role="dialog" aria-labelledby="shortlink" aria-hidden="true">
+          							<div class="modal-dialog" role="document">
+          							  <div class="modal-content">
+          							    <div class="modal-header">
+          							      <h5 class="btn btn-primary modal-title" id="shortlink"> Python</h5>
+          							      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          							        <span aria-hidden="true">&times;</span>
+          							      </button>
+          							    </div>
+          							    <div class="modal-body" style="text-align: left;">
+          							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/shortlink" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
+          							    	<pre><code class="python">
+from requests import get
+"""
+:link (YourLink)
+"""
+params = {'link': 'https://api-angga.herokuapp.com'}
+res = get('https://api-angga.herokuapp.com/api/shortlink', params=params).content
+print(res)
+											</code></pre>
+          							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
+{
+  "shortened_url": "https://api-angga.herokuapp.com/g/873725",
+  "status": 200
+}
+"""
+Open the web https://api-angga.herokuapp.com/g/873725 in your browser
+"""
           								</code></pre></div>
           								<div class="modal-footer">
           								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>

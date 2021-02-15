@@ -13,6 +13,7 @@ crayons==0.4.0
 cryptography==3.3.1
 Flask==1.1.2
 futures==3.1.1
+faunadb==4.0.1
 google==3.0.0
 html-text==0.5.2
 html5lib==1.0.1
@@ -26,7 +27,6 @@ phonenumbers==8.10.2
 Pillow==7.2.0
 protobuf==3.14.0
 pycparser==2.20
-pyTelegramBotAPI==3.7.6
 pytesseract==0.3.7
 python-axolotl==0.2.3
 python-axolotl-curve25519==0.4.1.post2

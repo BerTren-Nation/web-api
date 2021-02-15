@@ -11,13 +11,18 @@ from urllib.parse import *
 from flask import *
 #from werkzeug.utils import *
 from functools import wraps
+from selenium.webdriver import PhantomJS
 from bs4 import BeautifulSoup as bs
-from requests import get, post
-import os, math, json, random, re, html_text, pytesseract, base64, time, smtplib
+from requests import get, post, Session
+from faunadb import query as q
+from faunadb.objects import Ref
+from faunadb.client import FaunaClient
+import os, math, json, random, re, html_text, pytesseract, base64, time, smtplib, string
 
 ua_ig = 'Mozilla/5.0 (Linux; Android 9; SM-A102U Build/PPR1.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 Instagram 155.0.0.37.107 Android (28/9; 320dpi; 720x1468; samsung; SM-A102U; a10e; exynos7885; en_US; 239490550)'
 
 app = Flask(__name__)
+client = FaunaClient(secret="fnAECDM_y6ACB0IddJ-dSMwtXAEuZP7AaaQrs8nz")
 apiKey = 'O8mUD3YrHIy9KM1fMRjamw8eg'
 apiKey_ocr = '09731daace88957'
 app.config['MEDIA'] = 'tts'
@@ -26,7 +31,11 @@ app.secret_key = b'BB,^z\x90\x88?\xcf\xbb'
 #app.config['Layer_Folder'] = 'layer'
 
 # FUNICTIONNYA
-
+def generate_identifier(n=6):
+    identifier = ""
+    for i in range(n):
+        identifier += random.choice(string.ascii_letters)
+    return identifier
 
 HTTP_STATUS_CODES = {
     100: "Continue",
@@ -94,6 +103,18 @@ HTTP_STATUS_CODES = {
     510: "Not Extended",
     511: "Network Authentication Failed",  # see RFC 6585
 }
+class StderrLog(object):
+    def close(self):
+        pass
+
+    def __getattr__(self, name):
+        return getattr(sys.stderr, name)
+
+
+class Driver(PhantomJS):
+    def __init__(self, *args, **kwargs):
+        super(Driver, self).__init__(*args, **kwargs)
+        self._log = StderrLog()
 
 def convert_size(size_bytes):
 	if size_bytes == 0:
@@ -106,6 +127,53 @@ def convert_size(size_bytes):
 
 #def allowed_file(filename):
 #    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSION
+
+@app.route("/api/ssweb", methods=['GET','POST'])
+def ssweb():
+    url = request.args.get("url", "")
+    width = int(request.args.get("w", 1000))
+    min_height = int(request.args.get("h", 400))
+    wait_time = float(request.args.get("t", 20)) / 1000  # ms
+    
+    driver = Driver()
+    driver.set_window_position(0, 0)
+    driver.set_window_size(width, min_height)
+
+    driver.set_page_load_timeout(20)
+    driver.implicitly_wait(20)
+    driver.get(url)
+
+    driver.set_window_size(width, min_height)
+    time.sleep(wait_time)
+
+    sys.stderr.write(driver.execute_script("return document.readyState") + "\n")
+
+    png = driver.get_screenshot_as_png()
+    driver.quit()
+
+    return Response(png, mimetype="image/png")
+
+@app.route("/api/shortlink/<path:address>/", methods=['GET','POST'])
+def generate(address):
+    identifier = generate_identifier()
+    client.query(q.create(q.collection("urls"), {
+        "data": {
+            "identifier": identifier,
+            "url": address
+        }
+    }))
+
+    shortened_url = request.host_url + identifier
+    return jsonify({"identifier": identifier, "shortened_url": shortened_url})
+
+@app.route("/g/<string:identifier>/", methods=['GET','POST'])
+def fetch_original(identifier):
+    try:
+        url = client.query(q.get(q.match(q.index("Neko"), identifier)))
+    except:
+        abort(404)
+
+    return redirect(url_for(url["data"]["url"]))
 
 @app.route('/api/statuscode', methods=['GET','POST'])
 def statuscode():
@@ -131,12 +199,6 @@ def simi():
 			return { 'status': False, 'pesan': 'Masukkan parameter language'}
 	else:
 		return { 'status': False, 'pesan': 'Masukkan parameter text'}
-
-@app.route('/api/randomquotes', methods=['GET','POST'])
-def randomquotes():
-	quotes_file = json.loads(open('quotes.json').read())
-	result = random.choice(quotes_file)
-	return { 'status': 200, 'result': result }
 
 @app.route('/api/husbu', methods=['GET','POST'])
 def husbu():
