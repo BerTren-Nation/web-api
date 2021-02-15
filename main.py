@@ -103,18 +103,7 @@ HTTP_STATUS_CODES = {
     510: "Not Extended",
     511: "Network Authentication Failed",  # see RFC 6585
 }
-class StderrLog(object):
-    def close(self):
-        pass
 
-    def __getattr__(self, name):
-        return getattr(sys.stderr, name)
-
-
-class Driver(PhantomJS):
-    def __init__(self, *args, **kwargs):
-        super(Driver, self).__init__(*args, **kwargs)
-        self._log = StderrLog()
 
 def convert_size(size_bytes):
 	if size_bytes == 0:
@@ -131,26 +120,14 @@ def convert_size(size_bytes):
 @app.route("/api/ssweb", methods=['GET','POST'])
 def ssweb():
     url = request.args.get("url", "")
-    width = int(request.args.get("w", 1000))
-    min_height = int(request.args.get("h", 400))
-    wait_time = float(request.args.get("t", 20)) / 1000  # ms
-    
-    driver = Driver()
-    driver.set_window_position(0, 0)
-    driver.set_window_size(width, min_height)
-
-    driver.set_page_load_timeout(20)
-    driver.implicitly_wait(20)
-    driver.get(url)
-
-    driver.set_window_size(width, min_height)
-    time.sleep(wait_time)
-
-    sys.stderr.write(driver.execute_script("return document.readyState") + "\n")
-
-    png = driver.get_screenshot_as_png()
-    driver.quit()
-
+	chrome_options = webdriver.ChromeOptions()
+	chrome_options.add_argument("--headless")
+	chrome_options.add_argument("--disable-dev-shm-usage")
+	chrome_options.add_argument("--no-sandbox")
+	chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+	driver.get(url)
+	png = driver.get_screenshot_as_png()
     return Response(png, mimetype="image/png")
 
 @app.route("/api/shortlink/<path:address>/", methods=['GET','POST'])
