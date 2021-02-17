@@ -182,6 +182,86 @@ print(res)
           						</div>
           					</td>
           				</tr><tr><td><font color="green">Active</font></td>
+          					<td>Chord</td>
+          					<td>
+          						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#chord">
+          						  <i class="material-icons">info</i>
+          						  <span class="text">Example</span>
+          						</button>
+          						<div class="modal fade" id="chord" role="dialog" aria-labelledby="chord" aria-hidden="true">
+          							<div class="modal-dialog" role="document">
+          							  <div class="modal-content">
+          							    <div class="modal-header">
+          							      <h5 class="btn btn-primary modal-title" id="chord"> Python</h5>
+          							      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          							        <span aria-hidden="true">&times;</span>
+          							      </button>
+          							    </div>
+          							    <div class="modal-body" style="text-align: left;">
+          							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/chord" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
+          							    	<pre><code class="python">
+"""
+:q (YourMusic)
+"""
+from requests import get
+params = {'q': 'bojo galak'}
+res = get('https://api-angga.herokuapp.com/api/chord', params=params).content
+print(res)
+											</code></pre>
+          							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
+{
+  "result": "\r\n          Am                   F\r\nRasah dipikir duwe bojo sing galak\r\n              C                    G\r\nUrip mung sepisan mending digawe penak\r\n             Am                   F\r\nKudu kuat atine wani nanggung bebane\r\n            C                    G\r\nKabeh dilakoni yen wes ngene dalane\r\n\r\n(Intro) Am F C G\r\n        Am F C G\r\n\r\n     Am                 F\r\nAsem rasane kecut, Gula rasane legi\r\n      C                  G\r\nKabeh uwes kebacut, Yo kudu dilakoni\r\n       Am                 F\r\nSaking sabare aku ngadepi kelakuanmu\r\n       C                G\r\nSenengane nesu-nesu ro aku ngajak padu\r\n\r\n     Am            F\r\nTetapku sayang aku bertahan\r\n        C\r\nSenajan bojoku galak\r\n     G\r\ntak akan ku tinggalkan\r\n\r\n      Am                F\r\nTetep syukuri wae trimo opo enenge\r\n        C                    G\r\nMungkin iki dalane kowe sing dadi jodone\r\n\r\n(Reff)\r\n          Am                   F\r\nRasah dipikir duwe bojo sing galak\r\n              C                    G\r\nUrip mung sepisan mending digawe penak\r\n             Am                   F\r\nKudu kuat atine wani nanggung bebane\r\n            C                    G\r\nKabeh dilakoni yen wes ngene dalane\r\n\r\n                 Am     F C G\r\nAtiku wes kadung tresno..\r\n              Am   F C G\r\nSenajan atiku loro..\r\n\r\n  Am                F\r\nJamu godong telo campur beras kencur\r\n       C                      G\r\nKadang atiku gelo nanging tresnaku ra luntur\r\n   Am                F\r\nIbarat kowe geni aku dadi banyune\r\n      C                G\r\nYen kowe muni-muni aku iso ngademke\r\n\r\n     Am           F\r\nKowe mecucu aku tetep ngguyu\r\n      C                 G\r\nKabeh kekurangamu melengkapi uripku\r\n  Am                     F\r\nRasah nganggo sambat senajan kuwi berat\r\n     C               G\r\nDemi kowe bojoku yo aku mesti kuat..\r\n\r\n(Interlude) Am F C G\r\n            Am F C G\r\n            Am F C G\r\n            Am F C G\r\n\r\nAm   F              C\r\n Ora sah kenceng-kenceng\r\n     G             Am\r\nUrep seng santai wae\r\n    F          C\r\nOjo nganti sepaneng\r\n           G            Am G\r\nMending di tinggal karaoke..\r\n\r\n(Reff)\r\n          Am                   F\r\nRasah dipikir duwe bojo sing galak\r\n              C                    G\r\nUrip mung sepisan mending digawe penak\r\n             Am                   F\r\nKudu kuat atine wani nanggung bebane\r\n            C                    G\r\nKabeh dilakoni yen wes ngene dalane\r\n\r\n          Am                   F\r\nRasah dipikir duwe bojo sing galak\r\n              C                    G\r\nUrip mung sepisan mending digawe penak\r\n             Am                   F\r\nKudu kuat atine wani nanggung bebane\r\n            C                    G\r\nKabeh dilakoni yen wes ngene dalane\r\n\r\n                 Am     F C G\r\nAtiku wes kadung tresno..\r\n              Am   F C G\r\nSenajan atiku loro..\r\n                 Am     F C G\r\nAtiku wes kadung tresno..\r\n              Am   F C\r\nSenajan atiku loro..\r\n  G      G#m  Am\r\nNanging ora popo..\r\n", 
+  "status": 200
+}
+          								</code></pre></div>
+          								<div class="modal-footer">
+          								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          								</div>
+          					          </div>
+          							</div>
+          						</div>
+          					</td>
+          				</tr><tr><td><font color="green">Active</font></td>
+          					<td>Random Quote Anime</td>
+          					<td>
+          						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#rquotenime">
+          						  <i class="material-icons">info</i>
+          						  <span class="text">Example</span>
+          						</button>
+          						<div class="modal fade" id="rquotenime" role="dialog" aria-labelledby="rquotenime" aria-hidden="true">
+          							<div class="modal-dialog" role="document">
+          							  <div class="modal-content">
+          							    <div class="modal-header">
+          							      <h5 class="btn btn-primary modal-title" id="rquotenime"> Python</h5>
+          							      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          							        <span aria-hidden="true">&times;</span>
+          							      </button>
+          							    </div>
+          							    <div class="modal-body" style="text-align: left;">
+          							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/quotesnime/random" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
+          							    	<pre><code class="python">
+from requests import get
+res = get('https://api-angga.herokuapp.com/api/quotesnime/random').content
+print(res)
+											</code></pre>
+          							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
+{
+  "data": {
+    "anime": "Code Geass: Lelouch of the Rebellion",
+    "character": "Lelouch Lamperouge",
+    "quote": "Don't mistake borrowed power for your own ability!"
+  },
+  "status": 200
+}
+          								</code></pre></div>
+          								<div class="modal-footer">
+          								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          								</div>
+          					          </div>
+          							</div>
+          						</div>
+          					</td>
+          				</tr><tr><td><font color="green">Active</font></td>
           					<td>Info Gempa</td>
           					<td>
           						<button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#infogempa">
@@ -269,7 +349,7 @@ print(res)
           						  <i class="material-icons">info</i>
           						  <span class="text">Example</span>
           						</button>
-          						<div class="modal fade" id="waifu" role="dialog" aria-labelledby="shortlink" aria-hidden="true">
+          						<div class="modal fade" id="shortlink" role="dialog" aria-labelledby="shortlink" aria-hidden="true">
           							<div class="modal-dialog" role="document">
           							  <div class="modal-content">
           							    <div class="modal-header">
@@ -294,9 +374,6 @@ print(res)
   "shortened_url": "https://api-angga.herokuapp.com/g/873725",
   "status": 200
 }
-"""
-Open the web https://api-angga.herokuapp.com/g/873725 in your browser
-"""
           								</code></pre></div>
           								<div class="modal-footer">
           								   <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>

@@ -103,6 +103,16 @@ HTTP_STATUS_CODES = {
     511: "Network Authentication Failed",  # see RFC 6585
 }
 
+def short_url(address):
+    identifier = generate_identifier()
+    client.query(q.create(q.collection("urls"), {
+        "data": {
+            "identifier": identifier,
+            "url": address
+        }
+    }))
+    shortened_url = request.host_url + identifier
+    return shortened_url
 
 def convert_size(size_bytes):
 	if size_bytes == 0:
@@ -113,32 +123,68 @@ def convert_size(size_bytes):
 	s = round(size_bytes / p, 2)
 	return '%s %s' % (s, size_name[i])
 
+def apikey(view_function):
+    @wraps(view_function)
+    # the new, post-decoration function. Note *args and **kwargs here.
+    def decorated_function(*args, **kwargs):
+    	try:
+    		if request.args.get('apikey'):
+    			keyy = client.query(q.get(q.match(q.index("Neko"), request.args.get('apikey'))))
+    			return view_function(*args, **kwargs)
+    		else:
+    			return 'Masukan Apikey'
+    	except:
+    		return { 'status': False, 'pesan': 'Apikey Invalid'}
+    return decorated_function
+
 #def allowed_file(filename):
 #    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSION
 
-@app.route("/api/shortlink/<path:address>/", methods=['GET','POST'])
-def generate(address):
-    identifier = generate_identifier()
+@app.route("/api/npm", methods=['GET','POST'])
+@apikey
+def npm():
+	if request.args.get("apikey"):
+		try:
+			url = f'https://api.npms.io/v2/search?q={request.args.get("apikey")}'
+			result = get(url).json()
+			return {'status': 200, 'total': result["total"], 'result': result['result'] }
+		except Exception as e:
+			print(e)
+			return {'error': 'Emror'}
+	else:
+		return { 'status': False, 'pesan': 'Masukkan parameter q'}
+
+@app.route("/admin/add", methods=['GET','POST'])
+def generate():
+    identifier = request.args.get('apikey') #os.urandom(20).hex()
     client.query(q.create(q.collection("urls"), {
         "data": {
-            "identifier": identifier,
-            "url": address
+        	"identifier": identifier,
+            "apikey": identifier
         }
     }))
 
     shortened_url = request.host_url + identifier
-    return jsonify({"identifier": identifier, "shortened_url": shortened_url})
+    return jsonify({"apikey": shortened_url})
+
+
+@app.route("/admin/delete", methods=['GET','POST'])
+def delete_apikey():
+	url = client.query(q.get(q.ref(q.collection("urls"))))
+	#result = client.query(q.delete(q.ref(q.collection("urls"), "Mantap")))
+	return url["data"]
 
 @app.route("/g/<string:identifier>/", methods=['GET','POST'])
 def fetch_original(identifier):
     try:
         url = client.query(q.get(q.match(q.index("Neko"), identifier)))
     except:
-        abort(404)
+        return 'Apikey Tidak Di Izinkan'
 
-    return redirect(url_for(url["data"]["url"]))
+    return redirect(url["data"]["url"])
 
 @app.route('/api/statuscode', methods=['GET','POST'])
+@apikey
 def statuscode():
 	if request.args.get('code'):
 		try:
@@ -150,6 +196,7 @@ def statuscode():
 		return { 'status': False, 'pesan': 'Masukkan parameter code'}
 
 @app.route('/api/simi', methods=['GET','POST'])
+@apikey
 def simi():
 	if request.args.get('text'):
 		if request.args.get('language'):
@@ -164,12 +211,14 @@ def simi():
 		return { 'status': False, 'pesan': 'Masukkan parameter text'}
 
 @app.route('/api/husbu', methods=['GET','POST'])
+@apikey
 def husbu():
 	husbu_file = json.loads(open('husbu.json').read())
 	result = random.choice(husbu_file)
 	return { 'status': 200, 'result': result }
 
 @app.route('/api/1cak', methods=['GET','POST'])
+@apikey
 def onecak():
 	if request.args.get('code'):
 		try:
@@ -223,6 +272,7 @@ def layer():
 		}
 
 @app.route('/api/spamgmail', methods=['GET','POST'])
+@apikey
 def spamgimel():
     if request.args.get('target'):
         if request.args.get('jum'):
@@ -269,6 +319,7 @@ def spamgimel():
         }
 
 @app.route('/api/spamcall', methods=['GET','POST'])
+@apikey
 def spamcall():
     if request.args.get('no'):
         no = request.args.get('no')
@@ -295,6 +346,7 @@ def spamcall():
             'pesan': '[!] Masukkan parameter no' 
         }
 @app.route('/api/spamsms', methods=['GET','POST'])
+@apikey
 def spamming():
     if request.args.get('no'):
         if request.args.get('jum'):
@@ -340,6 +392,7 @@ def spamming():
         }
 
 @app.route('/nulis', methods=['GET','POST'])
+@apikey
 def noolees():
     if request.args.get('text'):
         try:
@@ -361,6 +414,7 @@ def noolees():
             'pesan': '[!] Masukkan parameter text'
         }
 @app.route('/api/wiki', methods=['GET','POST'])
+@apikey
 def wikipedia():
 	if request.args.get('q'):
 		try:
@@ -387,6 +441,7 @@ def wikipedia():
 		}
 
 @app.route('/api/tts', methods=['GET','POST'])
+@apikey
 def tts():
 	if request.args.get('text'):
 		try:
@@ -429,6 +484,7 @@ def tts():
 		}
 
 @app.route('/api/ytv', methods=['GET','POST'])
+@apikey
 def ytv():
 	if request.args.get('url'):
 		try:
@@ -462,6 +518,7 @@ def ytv():
 		}
 
 @app.route('/api/yta', methods=['GET','POST'])
+@apikey
 def yta():
 	if request.args.get('url'):
 		try:
@@ -494,6 +551,7 @@ def yta():
 		}
 
 @app.route('/api/chord', methods=['GET','POST'])
+@apikey
 def chord():
 	if request.args.get('q'):
 		try:
@@ -518,6 +576,7 @@ def chord():
 		}
 
 @app.route('/api/dewabatch', methods=['GET','POST'])
+@apikey
 def dewabatch():
 	if request.args.get('q'):
 		try:
@@ -544,6 +603,7 @@ def dewabatch():
 		}
 
 @app.route('/api/komiku', methods=['GET','POST'])
+@apikey
 def komiku():
     if request.args.get('q'):
         try:
@@ -572,6 +632,7 @@ def komiku():
         }
 
 @app.route('/api/kuso', methods=['GET','POST'])
+@apikey
 def kusonime():
 	if request.args.get('q'):
 		try:
@@ -600,6 +661,7 @@ def kusonime():
 		}
 
 @app.route('/api/otakudesu')
+@apikey
 def otakudesuu():
     if request.args.get('q'):
         try:
@@ -627,6 +689,7 @@ def otakudesuu():
         }
             
 @app.route('/api/brainly', methods=['GET','POST'])
+@apikey
 def brainly_scraper():
 	if request.args.get('q'):
 		try:
@@ -649,23 +712,27 @@ def brainly_scraper():
 		}
 
 @app.route('/api/nekonime', methods=['GET','POST'])
+@apikey
 def nekonimek():
 	try:
 		neko = get('https://waifu.pics/api/sfw/neko').json()
 		nimek = neko['url']
+		result = short_url(nimek)
 		return {
 			'status': 200,
-			'result': nimek
+			'result': result
 		}
 	except:
 		neko = get('https://waifu.pics/api/sfw/neko').json()
 		nimek = neko['url']
+		result = short_url(nimek)
 		return {
 			'status': 200,
-			'result': nimek
+			'result': result
 		}
 
 @app.route('/api/randomloli', methods=['GET','POST'])
+@apikey
 def randomloli():
 	try:
 		hehe = ['kawaii','neko']
@@ -680,6 +747,7 @@ def randomloli():
 			'result': loli
 		}
 @app.route('/api/ig', methods=['GET','POST'])
+@apikey
 def igeh():
 	if request.args.get('url'):
 		try:
@@ -710,6 +778,7 @@ def igeh():
 		}
 
 @app.route('/api/cuaca', methods=['GET','POST'])
+@apikey
 def cuaca():
 	if request.args.get('q'):
 		try:
@@ -872,7 +941,6 @@ def quotes():
 @app.route('/api/quotesnime/random', methods=['GET','POST'])
 def quotesnimerandom():
 	quotesnime = get('https://animechanapi.xyz/api/quotes/random').json()['data'][0]
-	print(quotesnime)
 	return {
 		'status': 200,
 		'data': {
