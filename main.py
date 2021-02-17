@@ -145,7 +145,7 @@ def apikey(view_function):
 def npm():
 	if request.args.get("apikey"):
 		try:
-			url = f'https://api.npms.io/v2/search?q={request.args.get("apikey")}'
+			url = f'https://api.npms.io/v2/search?q={request.args.get("q")}'
 			result = get(url).json()
 			return {'status': 200, 'total': result["total"], 'result': result['result'] }
 		except Exception as e:
