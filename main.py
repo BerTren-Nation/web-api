@@ -112,7 +112,7 @@ def short_url(address):
             "url": address
         }
     }))
-    shortened_url = request.host_url + identifier
+    shortened_url = f'{request.host_url}/g/{identifier}'
     return shortened_url
 
 def convert_size(size_bytes):
@@ -166,16 +166,7 @@ def npm():
 @app.route("/api/shortlink", methods=['GET','POST'])
 def generate():
 	if request.args.get('link'):
-    	urandim = os.urandom(20).hex()
-    	client.query(q.create(q.collection("urls"), {
-        	"data": {
-        		"identifier": urandim,
-            	"url": request.args.get('link')
-        	}
-    	}))
-
-    	shortened_url = f'{request.host_url}g/{urandim}'
-    	return jsonify({"status": 200, "url": shortened_url})
+		return { "status": 200, "result": short_url(request.args.get('link'))}
     else:
     	return { 'status': False, 'pesan': 'Masukkan parameter link'}
 
