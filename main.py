@@ -11,6 +11,7 @@ from urllib.parse import *
 from flask import *
 #from werkzeug.utils import *
 from functools import wraps
+from googletrans import Translator
 from bs4 import BeautifulSoup as bs
 from requests import get, post, Session
 from faunadb import query as q
@@ -22,6 +23,7 @@ ua_ig = 'Mozilla/5.0 (Linux; Android 9; SM-A102U Build/PPR1.180610.011; wv) Appl
 
 app = Flask(__name__)
 client = FaunaClient(secret="fnAECDM_y6ACB0IddJ-dSMwtXAEuZP7AaaQrs8nz")
+translator = Translator()
 apiKey = 'O8mUD3YrHIy9KM1fMRjamw8eg'
 apiKey_ocr = '09731daace88957'
 app.config['MEDIA'] = 'tts'
@@ -133,12 +135,20 @@ def apikey(view_function):
     			return view_function(*args, **kwargs)
     		else:
     			return 'Masukan Apikey'
-    	except:
+    	except Exception as e:
+    		print(e)
     		return { 'status': False, 'pesan': 'Apikey Invalid'}
     return decorated_function
 
 #def allowed_file(filename):
 #    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSION
+@app.route("/api/translate", methods=['GET','POST'])
+def translate():
+	text = request.args.get('text')
+	language = request.args.get('language')
+	result = translator.translate(f'{text}', dest=language)
+	print(result)
+	return result
 
 @app.route("/api/npm", methods=['GET','POST'])
 @apikey
@@ -154,32 +164,28 @@ def npm():
 	else:
 		return { 'status': False, 'pesan': 'Masukkan parameter q'}
 
-@app.route("/admin/add", methods=['GET','POST'])
+@app.route("/api/shortlink", methods=['GET','POST'])
 def generate():
-    identifier = request.args.get('apikey') #os.urandom(20).hex()
-    client.query(q.create(q.collection("urls"), {
-        "data": {
-        	"identifier": identifier,
-            "apikey": identifier
-        }
-    }))
+	if request.args.get('link'):
+    	identifier = request.args.get('link') #os.urandom(20).hex()
+    	client.query(q.create(q.collection("urls"), {
+        	"data": {
+        		"identifier": identifier,
+            	"url": identifier
+        	}
+    	}))
 
-    shortened_url = request.host_url + identifier
-    return jsonify({"apikey": shortened_url})
-
-
-@app.route("/admin/delete", methods=['GET','POST'])
-def delete_apikey():
-	url = client.query(q.get(q.ref(q.collection("urls"))))
-	#result = client.query(q.delete(q.ref(q.collection("urls"), "Mantap")))
-	return url["data"]
+    	shortened_url = f'{request.host_url}g/{identifier}
+    	return jsonify({"status": 200, "url": shortened_url})
+    else:
+    	return { 'status': False, 'pesan': 'Masukkan parameter link'}
 
 @app.route("/g/<string:identifier>/", methods=['GET','POST'])
 def fetch_original(identifier):
     try:
         url = client.query(q.get(q.match(q.index("Neko"), identifier)))
     except:
-        return 'Apikey Tidak Di Izinkan'
+        return { 'status': False, 'pesan': 'Tidak Di Temukan Code'}
 
     return redirect(url["data"]["url"])
 
@@ -609,15 +615,14 @@ def komiku():
         try:
             q = request.args.get('q')
             komi = search_komiku(q)
+            print(komi)
             if 'Tidak di temukan' not in komi:
                 manga = scrap_komiku(komi)
+                print(manga)
                 return {
                     'status': 200,
-                    'info': manga['info'],
-                    'genre': manga['genre'],
-                    'sinopsis': manga['sinopsis'],
                     'thumb': manga['thumb'],
-                    'link_dl': manga['dl_link']
+                    'info': manga['info']
                 }
         except Exception as e:
             print(e)
