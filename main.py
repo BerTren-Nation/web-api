@@ -166,15 +166,15 @@ def npm():
 @app.route("/api/shortlink", methods=['GET','POST'])
 def generate():
 	if request.args.get('link'):
-    	identifier = request.args.get('link') #os.urandom(20).hex()
+    	identifier = os.urandom(20).hex()
     	client.query(q.create(q.collection("urls"), {
         	"data": {
         		"identifier": identifier,
-            	"url": identifier
+            	"url": request.args.get('link')
         	}
     	}))
 
-    	shortened_url = f'{request.host_url}g/{identifier}
+    	shortened_url = f'{request.host_url}g/{identifier}'
     	return jsonify({"status": 200, "url": shortened_url})
     else:
     	return { 'status': False, 'pesan': 'Masukkan parameter link'}
