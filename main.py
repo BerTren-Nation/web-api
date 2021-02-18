@@ -31,7 +31,6 @@ app.secret_key = b'BB,^z\x90\x88?\xcf\xbb'
 #ALLOWED_EXTENSION = set(['png', 'jpeg', 'jpg'])
 #app.config['Layer_Folder'] = 'layer'
 
-# FUNICTIONNYA
 def generate_identifier(n=6):
     identifier = ""
     for i in range(n):
