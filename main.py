@@ -112,7 +112,7 @@ def short_url(address):
             "url": address
         }
     }))
-    shortened_url = f'{request.host_url}/g/{identifier}'
+    shortened_url = f'{request.host_url}g/{identifier}/'
     return shortened_url
 
 def convert_size(size_bytes):
@@ -164,11 +164,12 @@ def npm():
 		return { 'status': False, 'pesan': 'Masukkan parameter q'}
 
 @app.route("/api/shortlink", methods=['GET','POST'])
-def generate():
+def shortlink():
 	if request.args.get('link'):
-		return { "status": 200, "result": short_url(request.args.get('link'))}
-    else:
-    	return { 'status': False, 'pesan': 'Masukkan parameter link'}
+		link = request.args.get('link')
+		return { "status": 200, "result": short_url(link) }
+	else:
+		return 'salah cok'
 
 @app.route("/g/<string:identifier>/", methods=['GET','POST'])
 def fetch_original(identifier):
