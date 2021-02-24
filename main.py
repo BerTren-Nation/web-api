@@ -7,6 +7,7 @@ from lib.resize import *
 from lib.search import *
 from lib.nulis import *
 from lib.meme import *
+from lib.yourcountdown import *
 from urllib.parse import *
 from flask import *
 #from werkzeug.utils import *
@@ -16,12 +17,19 @@ from bs4 import BeautifulSoup as bs
 from requests import get, post, Session
 from faunadb import query as q
 from faunadb.objects import Ref
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from faunadb.client import FaunaClient
 import os, math, json, random, re, html_text, pytesseract, base64, time, smtplib, string
 
 ua_ig = 'Mozilla/5.0 (Linux; Android 9; SM-A102U Build/PPR1.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.136 Mobile Safari/537.36 Instagram 155.0.0.37.107 Android (28/9; 320dpi; 720x1468; samsung; SM-A102U; a10e; exynos7885; en_US; 239490550)'
 
 app = Flask(__name__)
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["2 per minute", "1 per second"],
+)
 client = FaunaClient(secret="fnAECDM_y6ACB0IddJ-dSMwtXAEuZP7AaaQrs8nz")
 translator = Translator()
 apiKey = 'O8mUD3YrHIy9KM1fMRjamw8eg'
@@ -30,6 +38,12 @@ app.config['MEDIA'] = 'tts'
 app.secret_key = b'BB,^z\x90\x88?\xcf\xbb'
 #ALLOWED_EXTENSION = set(['png', 'jpeg', 'jpg'])
 #app.config['Layer_Folder'] = 'layer'
+ip_ban_list = ['1127.0.0.1', '115.178.211.341']
+@app.before_request
+def block_method():
+    ip = request.environ.get('REMOTE_ADDR')
+    if ip in ip_ban_list:
+        abort(403)
 
 def generate_identifier(n=6):
     identifier = ""
@@ -141,6 +155,24 @@ def apikey(view_function):
 
 #def allowed_file(filename):
 #    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSION
+@app.route("/slow", methods=['GET','POST'])
+@limiter.limit("10 per day")
+def slow():
+	return 'tamat'
+
+@app.route("/api/counterdown", methods=['GET','POST'])
+def counterdown():
+	try:
+		result=pencarian_countdown(request.args.get('anime'))
+		return {
+						'status': 200,
+						'title': result['title'],
+						'time': result['time']
+					}
+	except Exception as e:
+		print(e)
+		return 'error'
+
 @app.route("/api/translate", methods=['GET','POST'])
 def translate():
 	text = request.args.get('text')
@@ -148,6 +180,13 @@ def translate():
 	result = translator.translate(f'{text}', dest=language)
 	print(result)
 	return result
+
+@app.route("/api/carbon", methods=['GET','POST'])
+def carbon():
+	link = f'https://carbon.now.sh/?bg=rgba%28171%2C+184%2C+195%2C+1%29&t=seti&wt=none&l=auto&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=false&fl=1&fm=Hack&fs=14px&lh=133%25&si=false&es=2x&wm=false&code=tes'
+	carbo = bs(get(f'{link}').content, 'html.parser')
+	print(carbo)
+	return '200'
 
 @app.route("/api/npm", methods=['GET','POST'])
 @apikey
@@ -487,12 +526,13 @@ def ytv():
 		try:
 			url = request.args.get('url').replace('[','').replace(']','')
 			ytv = post('https://www.y2mate.com/mates/en60/analyze/ajax',data={'url':url,'q_auto':'0','ajax':'1'}).json()
-			yaha = bs(ytv['result'], 'html.parser').findAll('td')
-			filesize = yaha[len(yaha)-23].text
-			id = re.findall('var k__id = "(.*?)"', ytv['result'])
-			thumb = bs(ytv['result'], 'html.parser').find('img')['src']
-			title = bs(ytv['result'], 'html.parser').find('b').text
-			dl_link = bs(post('https://www.y2mate.com/mates/en60/convert',data={'type':url.split('/')[2],'_id':id[0],'v_id':url.split('/')[3],'ajax':'1','token':'','ftype':'mp4','fquality':'360p'}).json()['result'],'html.parser').find('a')['href']
+			print(ytv)
+			#yaha = bs(ytv['result'], 'html.parser').findAll('td')
+			#filesize = yaha[len(yaha)-23].text
+			#id = re.findall('var k__id = "(.*?)"', ytv['result'])
+			#thumb = bs(ytv['result'], 'html.parser').find('img')['src']
+			#title = bs(ytv['result'], 'html.parser').find('b').text
+			#dl_link = bs(post('https://www.y2mate.com/mates/en60/convert',data={'type':url.split('/')[2],'_id':id[0],'v_id':url.split('/')[3],'ajax':'1','token':'','ftype':'mp4','fquality':'360p'}).json()['result'],'html.parser').find('a')['href']
 			return {
 				'status': 200,
 				'title': title,
@@ -526,7 +566,8 @@ def yta():
 			id = re.findall('var k__id = "(.*?)"', yta['result'])
 			thumb = bs(yta['result'], 'html.parser').find('img')['src']
 			title = bs(yta['result'], 'html.parser').find('b').text
-			dl_link = bs(post('https://www.y2mate.com/mates/en60/convert',data={'type':url.split('/')[2],'_id':id[0],'v_id':url.split('/')[3],'ajax':'1','token':'','ftype':'mp3','fquality':'128'}).json()['result'],'html.parser').find('a')['href']
+			dl_link = bs(post('https://www.y2mate.com/mates/en60/convert',data={'type':url.split('/')[2],'_id':id[0],'v_id':url.split('/')[3],'ajax':'1','token':'','ftype':'mp3','fquality':'128'}).json()['result'],'html.parser')
+			print(dl_link)
 			return {
 				'status': 200,
 				'title': title,
