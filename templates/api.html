@@ -122,9 +122,10 @@
 """
 :text (YourText)
 :language (YourLanguage)
+:apikey (chat me to get apikey https://wa.me/6289636293927)
 """
 from requests import get
-params = {'text': 'Hello', 'language': 'id'}
+params = {'text': 'Hello', 'language': 'id', 'apikey': 'YOUR_APIKEY'}
 res = get('https://api-angga.herokuapp.com/api/simi', params=params).content
 print(res)
 											</code></pre>
@@ -162,9 +163,10 @@ print(res)
           							    	<pre><code class="python">
 """
 :code (YourStatusCode)
+:apikey (chat me to get apikey https://wa.me/6289636293927)
 """
 from requests import get
-params = {'code': 200}
+params = {'code': 200, 'apikey': 'YOUR_APIKEY'}
 res = get('https://api-angga.herokuapp.com/api/statuscode', params=params).content
 print(res)
 											</code></pre>
@@ -202,9 +204,10 @@ print(res)
           							    	<pre><code class="python">
 """
 :q (YourMusic)
+:apikey (chat me to get apikey https://wa.me/6289636293927)
 """
 from requests import get
-params = {'q': 'bojo galak'}
+params = {'q': 'bojo galak', 'apikey': 'YOUR_APIKEY'}
 res = get('https://api-angga.herokuapp.com/api/chord', params=params).content
 print(res)
 											</code></pre>
@@ -240,8 +243,12 @@ print(res)
           							    <div class="modal-body" style="text-align: left;">
           							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/quotesnime/random" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
           							    	<pre><code class="python">
+'''''
+:apikey (chat me to get apikey https://wa.me/6289636293927)
+'''''
 from requests import get
-res = get('https://api-angga.herokuapp.com/api/quotesnime/random').content
+params={'apikey': 'YOUR_APIKEY'}
+res = get('https://api-angga.herokuapp.com/api/quotesnime/random', params=params).content
 print(res)
 											</code></pre>
           							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
@@ -280,8 +287,12 @@ print(res)
           							    <div class="modal-body" style="text-align: left;">
           							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/infogempa" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
           							    	<pre><code class="python">
+'''''
+:apikey (chat me to get apikey https://wa.me/6289636293927)
+'''''
 from requests import get
-res = get('https://api-angga.herokuapp.com/api/infogempa').content
+params={'apikey': 'YOUR_APIKEY'}
+res = get('https://api-angga.herokuapp.com/api/infogempa', params=params).content
 print(res)
 											</code></pre>
           							    	<h5 class="btn btn-info">[ RESULT ]</h5><br><br><pre><code class="json">
@@ -322,7 +333,11 @@ print(res)
           							    <div class="modal-body" style="text-align: left;">
           							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/waifu" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
           							    	<pre><code class="python">
+'''''
+:apikey (chat me to get apikey https://wa.me/6289636293927)
+'''''
 from requests import get
+params={'apikey': 'YOUR_APIKEY'}
 res = get('https://api-angga.herokuapp.com/api/waifu').content
 print(res)
 											</code></pre>
@@ -361,11 +376,13 @@ print(res)
           							    <div class="modal-body" style="text-align: left;">
           							    	<input class="form-control" type="text" placeholder="[GET|POST] https://api-angga.herokuapp.com/api/shortlink" readonly><h5 class="btn btn-info">[ EXAMPLE ]</h5>
           							    	<pre><code class="python">
-from requests import get
 """
 :link (YourLink)
+:apikey (chat me to get apikey https://wa.me/6289636293927)
 """
-params = {'link': 'https://api-angga.herokuapp.com'}
+
+from requests import get
+params = {'link': 'https://api-angga.herokuapp.com', 'apikey': 'YOUR_APIKEY'}
 res = get('https://api-angga.herokuapp.com/api/shortlink', params=params).content
 print(res)
 											</code></pre>

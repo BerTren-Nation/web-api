@@ -12,7 +12,6 @@ from urllib.parse import *
 from flask import *
 #from werkzeug.utils import *
 from functools import wraps
-from googletrans import Translator
 from bs4 import BeautifulSoup as bs
 from requests import get, post, Session
 from faunadb import query as q
@@ -31,7 +30,6 @@ limiter = Limiter(
     default_limits=["2 per minute", "1 per second"],
 )
 client = FaunaClient(secret="fnAECDM_y6ACB0IddJ-dSMwtXAEuZP7AaaQrs8nz")
-translator = Translator()
 apiKey = 'O8mUD3YrHIy9KM1fMRjamw8eg'
 apiKey_ocr = '09731daace88957'
 app.config['MEDIA'] = 'tts'
@@ -172,14 +170,6 @@ def counterdown():
 	except Exception as e:
 		print(e)
 		return 'error'
-
-@app.route("/api/translate", methods=['GET','POST'])
-def translate():
-	text = request.args.get('text')
-	language = request.args.get('language')
-	result = translator.translate(f'{text}', dest=language)
-	print(result)
-	return result
 
 @app.route("/api/carbon", methods=['GET','POST'])
 def carbon():

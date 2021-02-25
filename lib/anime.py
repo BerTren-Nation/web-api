@@ -45,3 +45,8 @@ def scrap_otakudesu(url):
         'error': e,
         'msg': 'Failed get metadata'
     }
+def download_otakudesu(url):
+	otakudesu = bs(get(url).text, 'html.parser')
+	link_download = otakudesu.findAll('a', class_='download'))
+	print(link_download)
+	return '200'
