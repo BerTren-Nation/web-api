@@ -158,15 +158,23 @@ def apikey(view_function):
 def slow():
 	return 'tamat'
 
+@app.route("/api/otakudl", methods=['GET','POST'])
+def wibuu():
+	result = download_otakudesu(request.args.get('link'))
+	return result
+
 @app.route("/api/counterdown", methods=['GET','POST'])
 def counterdown():
 	try:
-		result=pencarian_countdown(request.args.get('anime'))
-		return {
-						'status': 200,
-						'title': result['title'],
-						'time': result['time']
-					}
+		if request.args.get('q'):
+			result=pencarian_countdown(request.args.get('q'))
+			return {
+							'status': 200,
+							'title': result['title'],
+							'time': result['time']
+						}
+		else:
+			return 'masukan parameter q'
 	except Exception as e:
 		print(e)
 		return 'error'
