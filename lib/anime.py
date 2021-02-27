@@ -51,3 +51,10 @@ def download_otakudesu(url):
 	download = otakudesu.find('div', class_='download')
 	results = download.find('a')
 	return results['href']
+	
+def download_zipshare(url):
+   ok = bs(get(url).text, 'html.parser')
+   o = ok.findAll('div', class_='center')
+   for i in o:
+   	print(i)
+   return '200'

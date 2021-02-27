@@ -37,6 +37,7 @@ app.secret_key = b'BB,^z\x90\x88?\xcf\xbb'
 #ALLOWED_EXTENSION = set(['png', 'jpeg', 'jpg'])
 #app.config['Layer_Folder'] = 'layer'
 ip_ban_list = ['1127.0.0.1', '115.178.211.341']
+
 @app.before_request
 def block_method():
     ip = request.environ.get('REMOTE_ADDR')
@@ -156,7 +157,13 @@ def apikey(view_function):
 @app.route("/slow", methods=['GET','POST'])
 @limiter.limit("10 per day")
 def slow():
-	return 'tamat'
+	return 'hi'
+
+@app.route("/api/zip", methods=['GET','POST'])
+def zip():
+	result = download_zipshare(request.args.get('link'))
+	print(result)
+	return '209'
 
 @app.route("/api/otakudl", methods=['GET','POST'])
 def wibuu():
@@ -206,7 +213,7 @@ def shortlink():
 		link = request.args.get('link')
 		return { "status": 200, "result": short_url(link) }
 	else:
-		return 'salah cok'
+		return { 'status': False, 'pesan': 'Masukkan parameter link'}
 
 @app.route("/g/<string:identifier>/", methods=['GET','POST'])
 def fetch_original(identifier):
@@ -232,17 +239,20 @@ def statuscode():
 @app.route('/api/simi', methods=['GET','POST'])
 @apikey
 def simi():
-	if request.args.get('text'):
-		if request.args.get('language'):
-			simi_txt = request.args.get('text')
-			simi_language = request.args.get('language')
-			simi_url = f'http://api.simsimi.com/request.p?key=ae752867-ab2f-4827-ab64-88aebed49a1c&lc={simi_language}&text={simi_txt}'
-			result = get(simi_url).json()
-			return { 'status': 200, 'result': result['response'] }
+	try:
+		if request.args.get('text'):
+			if request.args.get('language'):
+				simi_txt = request.args.get('text')
+				simi_language = request.args.get('language')
+				simi_url = f'http://api.simsimi.com/request.p?key=ae752867-ab2f-4827-ab64-88aebed49a1c&lc={simi_language}&text={simi_txt}'
+				result = get(simi_url).json()
+				return { 'status': 200, 'result': result['response'] }
+			else:
+				return { 'status': False, 'pesan': 'Masukkan parameter language'}
 		else:
-			return { 'status': False, 'pesan': 'Masukkan parameter language'}
-	else:
-		return { 'status': False, 'pesan': 'Masukkan parameter text'}
+			return { 'status': False, 'pesan': 'Masukkan parameter text'}
+	except Exception as e:
+		return { 'status': False, 'pesan': '[!] Error Please Contact Creator Web Api!!!'}
 
 @app.route('/api/husbu', methods=['GET','POST'])
 @apikey
@@ -267,10 +277,6 @@ def onecak():
 			'pesan': '[!] Masukkan parameter code'
 		}
 
-@app.route('/api/r1cak', methods=['GET','POST'])
-def trenonecak():
-	result = trendcak(random.randint(1111110,9987199))
-	return { 'status': 200, 'result': result }
 
 @app.route('/admin/file/cyser/<path:filename>', methods=['GET','POST'])
 def sendFille(filename):
@@ -304,6 +310,30 @@ def layer():
 			'status': False,
 			'pesan': '[!] Masukkan parameter base64image'
 		}
+
+@app.route('/api/sendgmail', methods=['GET','POST'])
+@apikey
+def sendgmail():
+	if request.args.get('target'):
+		if request.args.get('text'):
+			try:
+				target_gmail = request.args.get('target')
+				pesan = request.args.get('text')
+				server = smtplib.SMTP('smtp.gmail.com', 587)
+				server.ehlo()
+				server.starttls()
+				server.login('spamz.cyser@gmail.com', 'spamz cyser 888')
+				message = f'From: {random.randint(1, 100)} \nSubject: ....\n{pesan}'
+				server.sendmail('spamz.cyser@gmail.com', target_gmail, message)
+				server.quit()
+				return {"status": 200, "pesan": "Sukses mengirim email ke {target_gmail}"}
+			except Exception as e:
+				print(e)
+				return {"status": 503, "pesan": "Bad Gateway"}
+		else:
+			return {"status": 204, "pesan": "Masukan parameter text"}
+	else:
+		return {"status": 204, "pesan": "Masukan parameter target"}
 
 @app.route('/api/spamgmail', methods=['GET','POST'])
 @apikey
@@ -360,7 +390,6 @@ def spamcall():
         if str(no).startswith('8'):
             hasil = ''
             kyaa = post('https://id.jagreward.com/member/verify-mobile/%s' % no).json()
-            print(kyaa['message'])
             if 'Anda akan menerima' in kyaa['message']:
                 hasil += '[!] Berhasil mengirim spam call ke nomor : 62%s' % no
             else:
@@ -426,7 +455,6 @@ def spamming():
         }
 
 @app.route('/nulis', methods=['GET','POST'])
-@apikey
 def noolees():
     if request.args.get('text'):
         try:
@@ -447,6 +475,7 @@ def noolees():
             'status': False,
             'pesan': '[!] Masukkan parameter text'
         }
+
 @app.route('/api/wiki', methods=['GET','POST'])
 @apikey
 def wikipedia():
@@ -517,7 +546,7 @@ def tts():
 			'pesan': '[!] Masukkan parameter text'
 		}
 
-@app.route('/api/ytv', methods=['GET','POST'])
+@app.route('/api/ytmp4', methods=['GET','POST'])
 @apikey
 def ytv():
 	if request.args.get('url'):
@@ -525,12 +554,12 @@ def ytv():
 			url = request.args.get('url').replace('[','').replace(']','')
 			ytv = post('https://www.y2mate.com/mates/en60/analyze/ajax',data={'url':url,'q_auto':'0','ajax':'1'}).json()
 			print(ytv)
-			#yaha = bs(ytv['result'], 'html.parser').findAll('td')
-			#filesize = yaha[len(yaha)-23].text
-			#id = re.findall('var k__id = "(.*?)"', ytv['result'])
-			#thumb = bs(ytv['result'], 'html.parser').find('img')['src']
-			#title = bs(ytv['result'], 'html.parser').find('b').text
-			#dl_link = bs(post('https://www.y2mate.com/mates/en60/convert',data={'type':url.split('/')[2],'_id':id[0],'v_id':url.split('/')[3],'ajax':'1','token':'','ftype':'mp4','fquality':'360p'}).json()['result'],'html.parser').find('a')['href']
+			yaha = bs(ytv['result'], 'html.parser').findAll('td')
+			filesize = yaha[len(yaha)-23].text
+			id = re.findall('var k__id = "(.*?)"', ytv['result'])
+			thumb = bs(ytv['result'], 'html.parser').find('img')['src']
+			title = bs(ytv['result'], 'html.parser').find('b').text
+			dl_link = bs(post('https://www.y2mate.com/mates/en60/convert',data={'type':url.split('/')[2],'_id':id[0],'v_id':url.split('/')[3],'ajax':'1','token':'','ftype':'mp4','fquality':'360p'}).json()['result'],'html.parser').find('a')['href']
 			return {
 				'status': 200,
 				'title': title,
@@ -552,7 +581,7 @@ def ytv():
 			'pesan': 'Masukkan parameter url'
 		}
 
-@app.route('/api/yta', methods=['GET','POST'])
+@app.route('/api/ytmp3', methods=['GET','POST'])
 @apikey
 def yta():
 	if request.args.get('url'):
@@ -992,7 +1021,7 @@ def api():
 
 @app.route('/', methods=['GET','POST'])
 def index():
-	return render_template('index.html')
+	return render_template('api.html')
 
 @app.errorhandler(404)
 def error(e):
