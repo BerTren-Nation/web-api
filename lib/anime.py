@@ -45,16 +45,20 @@ def scrap_otakudesu(url):
         'error': e,
         'msg': 'Failed get metadata'
     }
+def scrap_anoboy(url):
+	try:
+		anoboy = bs(get(url).text, 'html.parser')
+		title = anoboy.find('div', class_='contentdeks').text
+		return {
+			'title': title
+		}
+	except Exception as e: return {
+		'error': e,
+		'pesan': 'Failed get metadata'
+	}
 
 def download_otakudesu(url):
 	otakudesu = bs(get(url).text, 'html.parser')
 	download = otakudesu.find('div', class_='download')
 	results = download.find('a')
 	return results['href']
-	
-def download_zipshare(url):
-   ok = bs(get(url).text, 'html.parser')
-   o = ok.findAll('div', class_='center')
-   for i in o:
-   	print(i)
-   return '200'

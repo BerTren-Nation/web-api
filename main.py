@@ -8,6 +8,7 @@ from lib.search import *
 from lib.nulis import *
 from lib.meme import *
 from lib.yourcountdown import *
+from lib.scd import *
 from urllib.parse import *
 from flask import *
 #from werkzeug.utils import *
@@ -27,7 +28,7 @@ app = Flask(__name__)
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["2 per minute", "1 per second"],
+    default_limits=["20 per minute", "2 per second"],
 )
 client = FaunaClient(secret="fnAECDM_y6ACB0IddJ-dSMwtXAEuZP7AaaQrs8nz")
 apiKey = 'O8mUD3YrHIy9KM1fMRjamw8eg'
@@ -159,6 +160,7 @@ def apikey(view_function):
 def slow():
 	return 'hi'
 
+
 @app.route("/api/zip", methods=['GET','POST'])
 def zip():
 	result = download_zipshare(request.args.get('link'))
@@ -185,6 +187,11 @@ def counterdown():
 	except Exception as e:
 		print(e)
 		return 'error'
+@app.route("/b", methods=['GET','POST'])
+def b():
+	result = scd()
+	print(result)
+	return '200'
 
 @app.route("/api/carbon", methods=['GET','POST'])
 def carbon():
@@ -1016,14 +1023,22 @@ def quotesnimerandom():
 
 
 @app.route('/api', methods=['GET','POST'])
+@limiter.limit("20000 per day")
 def api():
 	return render_template('api.html')
 
 @app.route('/', methods=['GET','POST'])
+@limiter.limit("20000 per day")
 def index():
 	return render_template('api.html')
 
+@app.route('/a', methods=['GET','POST'])
+@limiter.limit("20000 per day")
+def a():
+	return render_template('test.html')
+
 @app.errorhandler(404)
+@limiter.limit("20000 per day")
 def error(e):
 	return render_template('404.html'), 404
 if __name__ == '__main__':

@@ -17,3 +17,7 @@ def search_dewabatch(query):
 def search_otakudesu(query):
 	url = otakudesu = bs(get('https://otakudesu.tv/?s=%s&post_type=anime' % query, headers=usr_agent).text, 'html.parser').find('ul', class_='chivsrc').a['href']
 	return url
+
+def search_anoboy(query):
+	url = bs(get('https://anoboy.tube/?s=%s' % query, headers=usr_agent).text, 'html.parser').find('div', class_='amvj').a['href']
+	return url
