@@ -8,7 +8,6 @@ from lib.search import *
 from lib.nulis import *
 from lib.meme import *
 from lib.yourcountdown import *
-from lib.scd import *
 from urllib.parse import *
 from flask import *
 #from werkzeug.utils import *
