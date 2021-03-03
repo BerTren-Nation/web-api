@@ -7,6 +7,7 @@ from lib.resize import *
 from lib.search import *
 from lib.nulis import *
 from lib.meme import *
+from lib.sfile import *
 from lib.yourcountdown import *
 from urllib.parse import *
 from flask import *
@@ -159,12 +160,27 @@ def apikey(view_function):
 def slow():
 	return 'hi'
 
-
-@app.route("/api/zip", methods=['GET','POST'])
-def zip():
-	result = download_zipshare(request.args.get('link'))
-	print(result)
-	return '209'
+@app.route("/api/sfiledl", methods=['GET','POST'])
+def sfiledl():
+	try:
+		if request.args.get('url'):
+			url = request.args.get('url')
+			result = sfile(url)
+			return {
+							'status': 200,
+							'link_dl': result['href']
+						}
+		else:
+			return {
+							'status': False,
+							'pesan': 'masukan parameter q'
+						}
+	except Exception as e:
+		print(e)
+		return {
+						'status': False,
+						'pesan': 'error'
+					}
 
 @app.route("/api/otakudl", methods=['GET','POST'])
 def wibuu():
