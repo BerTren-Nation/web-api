@@ -615,8 +615,7 @@ def yta():
 			id = re.findall('var k__id = "(.*?)"', yta['result'])
 			thumb = bs(yta['result'], 'html.parser').find('img')['src']
 			title = bs(yta['result'], 'html.parser').find('b').text
-			dl_link = bs(post('https://www.y2mate.com/mates/en60/convert',data={'type':url.split('/')[2],'_id':id[0],'v_id':url.split('/')[3],'ajax':'1','token':'','ftype':'mp3','fquality':'128'}).json()['result'],'html.parser')
-			print(dl_link)
+			dl_link = bs(post('https://www.y2mate.com/mates/en60/convert',data={'type':url.split('/')[2],'_id':id[0],'v_id':url.split('/')[3],'ajax':'1','token':'','ftype':'mp3','fquality':'128'}).json()['result'],'html.parser').find('a')['href']
 			return {
 				'status': 200,
 				'title': title,
