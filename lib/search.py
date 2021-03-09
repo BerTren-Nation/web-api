@@ -21,3 +21,8 @@ def search_otakudesu(query):
 def search_anoboy(query):
 	url = bs(get('https://anoboy.tube/?s=%s' % query, headers=usr_agent).text, 'html.parser').find('div', class_='amvj').a['href']
 	return url
+
+def search_image_google(query):
+	url = bs(get(f'https://www.google.com/searchbyimage?site=search&sa=X&image_url={query}', headers=usr_agent).text, 'html.parser')
+	result = url.find_all('span', class_="aCOpRe")
+	return result

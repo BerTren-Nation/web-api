@@ -198,15 +198,18 @@ def counterdown():
 							'time': result['time']
 						}
 		else:
-			return 'masukan parameter q'
+			return { 'status': False, 'pesan': 'Masukkan parameter q'}
 	except Exception as e:
 		print(e)
 		return 'error'
-@app.route("/b", methods=['GET','POST'])
+@app.route("/api/searchimage", methods=['GET','POST'])
 def b():
-	result = scd()
-	print(result)
-	return '200'
+	if request.args.get('q'):
+		result = search_image_google(request.args.get('q'))
+		print(result)
+		return '200'
+	else:
+		return { 'status': False, 'pesan': 'Masukkan parameter q'}
 
 @app.route("/api/carbon", methods=['GET','POST'])
 def carbon():
@@ -1046,10 +1049,10 @@ def api():
 def index():
 	return render_template('api.html')
 
-@app.route('/a', methods=['GET','POST'])
+@app.route('/for-you', methods=['GET','POST'])
 @limiter.limit("20000 per day")
 def a():
-	return render_template('test.html')
+	return render_template('cayang.html')
 
 @app.errorhandler(404)
 @limiter.limit("20000 per day")
