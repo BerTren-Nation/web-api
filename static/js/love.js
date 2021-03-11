@@ -24,12 +24,14 @@ document.querySelector(".tombol").addEventListener('click', function () {
           showCancelButton: true,
           inputValidator: (value) => {
             if (!value) {
-              return 'Isi dulu, Jangan curang'
+            	console.log('error')
+            	print('errorr')
             } else {
               nama = value;
             }
           }
         }).then(function () {
+          if (nama === "undefined") return Swal.fire('Yaudah')
           const pertanyaan = Swal.fire({
             title: `${nama} Suka ga sama ${sender}?`,
             showDenyButton: true,
