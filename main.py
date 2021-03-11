@@ -170,11 +170,11 @@ def streamingyt():
 				thumb = request.args.get('thumb')
 				command = f'ffmpeg -re -filter_complex movie={thumb}:loop=0,setpts=N/FRAME_RATE/TB -i {url} -codec:a aac -b:a 128k -ar 44100 -maxrate 400k -bufsize 200k -strict experimental -f flv rtmp://a.rtmp.youtube.com/live2/{private}'
 				os.system(command)
-				return '200'
+				return '200 upsss'
 			else:
 				command = f'ffmpeg -re -filter_complex setpts=N/FRAME_RATE/TB -i {url} -codec:a aac -b:a 128k -ar 44100 -maxrate 400k -bufsize 200k -strict experimental -f flv rtmp://a.rtmp.youtube.com/live2/{private}'
 				os.system(command)
-				return '200'
+				return '200 nyaaa'
 		else:
 			return { 'status': False, 'pesan': 'Masukkan parameter private'}
 	else:
