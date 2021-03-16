@@ -632,7 +632,7 @@ def yta():
 	if request.args.get('url'):
 		try:
 			url = request.args.get('url').replace('[','').replace(']','')
-			yta = post('https://www.y2mate.com/mates/en60/analyze/ajax',data={'url':url,'q_auto':'0','ajax':'1'}).json()
+			yta = post('https://www.y2mate.com/mates/en60/analyze/ajax',data={'url':url,}).json()
 			yaha = bs(yta['result'], 'html.parser').findAll('td')
 			filesize = yaha[len(yaha)-10].text
 			id = re.findall('var k__id = "(.*?)"', yta['result'])
@@ -1002,13 +1002,17 @@ def waifu():
 	a = json.loads(scrap.find('script', attrs={'type':'application/ld+json'}).string)
 	desc = bs(get(a['url']).text, 'html.parser').find('meta', attrs={'property':'og:description'}).attrs['content']
 	result = json.loads(bs(get(a['url']).text, 'html.parser').find('script', attrs={'type':'application/ld+json'}).string)
+	all_image = bs(get(a['url']).text, 'html.parser')
+	#image = list(ntapz['src'] for ntapz in )
+	print(all_image.findAll('img'))
 	if result['gender'] == 'female':
 		return {
 			'status': 200,
 			'name': result['name'],
 			'desc': desc,
 			'image': result['image'],
-			'source': result['url']
+			'source': result['url'],
+			'gender': result['gender']
 		}
 	else:
 		return {
@@ -1016,7 +1020,8 @@ def waifu():
 			'name': '%s (husbu)' % result['name'],
 			'desc': desc,
 			'image': result['image'],
-			'source': result['url']
+			'source': result['url'],
+			'gender': result['gender']
 		}
 
 @app.route('/api/infogempa', methods=['GET','POST'])
